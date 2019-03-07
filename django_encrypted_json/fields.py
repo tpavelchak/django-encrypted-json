@@ -2,6 +2,7 @@ from django.db.models.fields import NOT_PROVIDED
 from django_pgjson.fields import JsonField, JsonBField, JsonAdapter
 
 from .utils import decrypt_values, encrypt_values
+import collections
 
 
 class EncryptedValueJsonField(JsonField):
@@ -71,7 +72,7 @@ class EncryptedValueJsonField(JsonField):
         # dict
         if self.blank and value == "":
             if self.default != NOT_PROVIDED:
-                if callable(self.default):
+                if isinstance(self.default, collections.Callable):
                     value = self.default()
                 else:
                     value = self.default

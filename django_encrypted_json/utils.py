@@ -15,7 +15,7 @@ elif isinstance(settings.FIELD_ENCRYPTION_KEY, dict):
     # allow the keys to be indexed in a dictionary
     keys = [
         cryptography.fernet.Fernet(k)
-        for k in settings.FIELD_ENCRYPTION_KEY.values()
+        for k in list(settings.FIELD_ENCRYPTION_KEY.values())
     ]
 else:
     # else turn the single key into a list of one
@@ -82,10 +82,10 @@ def encrypt_values(data, encrypter=None, skip_keys=None):
         return {
             key: pick_encrypter(key, skip_keys, encrypt_values)(
                 value, encrypter, skip_keys)
-            for key, value in data.iteritems()
+            for key, value in data.items()
         }
 
-    if isinstance(data, basestring):
+    if isinstance(data, str):
         return encrypter(data.encode('unicode_escape'))
 
     return encrypter(
@@ -118,10 +118,10 @@ def decrypt_values(data, decrypter=None):
     if isinstance(data, dict):
         return {
             key: decrypt_values(value, decrypter)
-            for key, value in data.iteritems()
+            for key, value in data.items()
         }
 
-    if isinstance(data, basestring):
+    if isinstance(data, str):
         # string data! if we got a string or unicode convert it to
         # bytes first, as per http://stackoverflow.com/a/11174804.
         #

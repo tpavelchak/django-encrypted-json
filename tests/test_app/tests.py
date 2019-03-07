@@ -10,7 +10,7 @@ from .models import TestModel
 # Create your tests here.
 
 
-LATIN1_NON_BREAKING_SPACE = u"""\
+LATIN1_NON_BREAKING_SPACE = """\
 ~~~New Room Update for Crimson House Should we use this same room for
 13:30-14:00 Weekly Sync Meeting (with Gargi)?  Hi All, This is a meeting
 call for Rakuten/HCL weekly sync update: to discuss done, on-going and
@@ -20,7 +20,7 @@ be decided in this part.  https://confluenc
 """
 
 UNICODE_HODGEPODGE = \
-    u"Testing «ταБЬℓσ»: 1<2 & 4+1>3, now 20% off! ÄŸÃ¼ÅŸiöçı 木下さん利用"
+    "Testing «ταБЬℓσ»: 1<2 & 4+1>3, now 20% off! ÄŸÃ¼ÅŸiöçı 木下さん利用"
 
 
 class PlainJsonField(TestCase):
@@ -49,8 +49,8 @@ class PlainJsonField(TestCase):
     def test_default_create(self):
         instance = TestModel.objects.create()
 
-        self.assertEquals(instance.json, {})
-        self.assertEquals(instance.optional_json, None)
+        self.assertEqual(instance.json, {})
+        self.assertEqual(instance.optional_json, None)
 
     def test_saving_data(self):
         instance = TestModel.objects.create()
@@ -63,7 +63,7 @@ class PlainJsonField(TestCase):
                 'next': 1,
                 'previous': 1.0,
                 'and': 'more',
-                'unicode': u'more'
+                'unicode': 'more'
             },
             'datetime': datetime.datetime.now(),
             'date': datetime.date.today(),
@@ -83,10 +83,10 @@ class PlainJsonField(TestCase):
 
         self.assertIsInstance(raw_db_data, dict)
         self.assertNotEqual(data['test'], raw_db_data['test'])
-        self.assertIsInstance(raw_db_data['test'], basestring)
-        self.assertIsInstance(raw_db_data['datetime'], basestring)
-        self.assertIsInstance(raw_db_data['date'], basestring)
-        self.assertIsInstance(raw_db_data['with_tz'], basestring)
+        self.assertIsInstance(raw_db_data['test'], str)
+        self.assertIsInstance(raw_db_data['datetime'], str)
+        self.assertIsInstance(raw_db_data['date'], str)
+        self.assertIsInstance(raw_db_data['with_tz'], str)
         self.assertIsInstance(raw_db_data['many'], list)
         self.assertIsInstance(raw_db_data['nested_1'], dict)
         self.assertIsInstance(raw_db_data['many_nested'], list)
@@ -102,7 +102,7 @@ class PlainJsonField(TestCase):
                 'next': 1,
                 'previous': 1.0,
                 'and': 'more',
-                'unicode': u'more'
+                'unicode': 'more'
             },
             'datetime': datetime.datetime.now(),
             'date': datetime.date.today(),
@@ -122,13 +122,13 @@ class PlainJsonField(TestCase):
         raw_db_data = row[0]
 
         self.assertIsInstance(raw_db_data, dict)
-        self.assertEquals(data['test'], raw_db_data['test'])
-        self.assertEquals(data['many_nested'], raw_db_data['many_nested'])
+        self.assertEqual(data['test'], raw_db_data['test'])
+        self.assertEqual(data['many_nested'], raw_db_data['many_nested'])
         self.assertNotEqual(data['many'], raw_db_data['many'])
         self.assertNotEqual(data['nested_1'], raw_db_data['nested_1'])
-        self.assertIsInstance(raw_db_data['datetime'], basestring)
-        self.assertIsInstance(raw_db_data['date'], basestring)
-        self.assertIsInstance(raw_db_data['with_tz'], basestring)
+        self.assertIsInstance(raw_db_data['datetime'], str)
+        self.assertIsInstance(raw_db_data['date'], str)
+        self.assertIsInstance(raw_db_data['with_tz'], str)
 
     def test_latin1(self):
         instance = TestModel.objects.create()
